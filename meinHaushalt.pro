@@ -17,6 +17,7 @@ SOURCES += \
     sources/addtransactionview.cpp \
     sources/adminregistrationview.cpp \
     sources/applicationview.cpp \
+    sources/categorydao.cpp \
     sources/catview.cpp \
     sources/changeinfoview.cpp \
     sources/changepasswordview.cpp \
@@ -31,14 +32,18 @@ SOURCES += \
     sources/menuview.cpp \
     sources/nopasswordloginview.cpp \
     sources/numberformatdelegate.cpp \
+    sources/payoptiondao.cpp \
     sources/payoptionsview.cpp \
     sources/popupwidget.cpp \
-    sources/user.cpp
+    sources/transactiondao.cpp \
+    sources/user.cpp \
+    sources/userdao.cpp
 
 HEADERS += \
     headers/addtransactionview.h \
     headers/adminregistrationview.h \
     headers/applicationview.h \
+    headers/categorydao.h \
     headers/catview.h \
     headers/changeinfoview.h \
     headers/changepasswordview.h \
@@ -53,9 +58,12 @@ HEADERS += \
     headers/menuview.h \
     headers/nopasswordloginview.h \
     headers/numberformatdelegate.h \
+    headers/payoptiondao.h \
     headers/payoptionsview.h \
     headers/popupwidget.h \
-    headers/user.h
+    headers/transactiondao.h \
+    headers/user.h \
+    headers/userdao.h
 
 FORMS += \
     forms/addtransactionview.ui \
