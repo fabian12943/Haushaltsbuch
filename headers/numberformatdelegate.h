@@ -14,9 +14,7 @@ public:
     NumberFormatDelegate(QObject *parent = Q_NULLPTR);
     QString displayText(const QVariant &value, const QLocale &locale) const Q_DECL_OVERRIDE{
         switch(value.type()){
-        case QMetaType::Float:
-            return locale.toString(value.toFloat(),'f', 2) + " €";
-        case QMetaType::Double:
+        case QVariant::Double:
             return locale.toString(value.toDouble(),'f', 2) + " €";
         default:
             return QStyledItemDelegate::displayText(value,locale);
