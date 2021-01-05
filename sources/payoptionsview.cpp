@@ -9,6 +9,7 @@ PayOptionsView::PayOptionsView(QWidget *parent):
     {
         ui->setupUi(this);
 
+        // Initialize PopUpWidgets to display error message next to Inputline if necessary
         payoptionPopUp = new PopUpWidget(this);
         payoptionListPopUp = new PopUpWidget(this);
     }

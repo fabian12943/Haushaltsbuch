@@ -8,6 +8,7 @@ ApplicationView::ApplicationView(QWidget *parent):
     {
         ui->setupUi(this);
 
+        // Add interfaces to stackedWidget to easily switch between them
         ui->stackedWidget->addWidget(&_AdminRegistration);
         ui->stackedWidget->addWidget(&_Login);
         ui->stackedWidget->addWidget(&_NoPasswordLogin);
@@ -21,6 +22,7 @@ ApplicationView::ApplicationView(QWidget *parent):
         ui->stackedWidget->addWidget(&_ManageUser);
         ui->stackedWidget->addWidget(&_ChangeTransaction);
 
+        // Connect interfaces and their signals to corresponding other interfaces to open them
         connect(&_AdminRegistration, SIGNAL(AdminRegistration()), this, SLOT(open_login()));
 
         connect(&_Login, SIGNAL(Login()), this, SLOT(open_menu()));
@@ -56,6 +58,7 @@ ApplicationView::ApplicationView(QWidget *parent):
 
         connect(&_ChangeTransaction, SIGNAL(Back()), this, SLOT(open_menu()));
 
+        // Open AdminRegistrationView if no Admin exists, open LoginView otherwise
         if (DbManager::adminExists() == false)
         {
             open_admin_registration();

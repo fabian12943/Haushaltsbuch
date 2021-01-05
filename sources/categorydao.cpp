@@ -24,8 +24,9 @@ bool CategoryDAO::addCategory(const QString &email, const QString &category)
 
 bool CategoryDAO::removeCategory(const QString &email, const QString &category)
 {
+    // Check if category can be deleted safely or if it is still in use in the transaction table
+    // If it is not save, method interrupts and returns false
     QSqlQuery checkQuery;
-
     checkQuery.prepare("SELECT *FROM transactions WHERE category = (:category)");
     checkQuery.bindValue(":category", category);
 

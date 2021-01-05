@@ -10,7 +10,10 @@ ChangeInfoView::ChangeInfoView(QWidget *parent):
     {
         ui->setupUi(this);
 
+        // Prevents new birthdate from being in the future
         ui->birthDate->setMaximumDate(QDate::currentDate());
+
+        // Initialize PopUpWidgets to display error message next to Inputline if necessary
         firstnamePopUp = new PopUpWidget(this);
         lastnamePopUp = new PopUpWidget(this);
     }
@@ -20,6 +23,7 @@ ChangeInfoView::~ChangeInfoView()
     delete ui;
 }
 
+// Fills the form with the data of the current user
 void ChangeInfoView::updateUI()
 {
     ui->MailLabel->setText(g_currentUser.getEmail());
@@ -42,6 +46,7 @@ void ChangeInfoView::on_BackButton_clicked()
 {
     updateUI();
 
+    // Hides error messages if any were shown
     firstnamePopUp->hide();
     lastnamePopUp->hide();
 
@@ -50,14 +55,17 @@ void ChangeInfoView::on_BackButton_clicked()
 
 void ChangeInfoView::on_ConfirmButton_clicked()
 {
+    // Save Userinput to Variables
     QString firstname = ui->firstNameLine->text().toLower().trimmed();
     firstname[0] = firstname[0].toUpper();
     QString lastname = ui->lastNameLine->text().toLower().trimmed();
     lastname[0] = lastname[0].toUpper();
     QString birthdate = ui->birthDate->text();
 
+    // All userinputs valid?
     bool valid = true;
 
+    // Check if firstname is valid, otherwise show error message next to input line
     if (!InputCheck::isValidName(firstname))
     {
         valid = false;
@@ -76,6 +84,7 @@ void ChangeInfoView::on_ConfirmButton_clicked()
         firstnamePopUp->show();
     }
 
+    // Check if lastname is valid, otherwise show error message next to input line
     if (!InputCheck::isValidName(lastname))
     {
         valid = false;
@@ -94,15 +103,20 @@ void ChangeInfoView::on_ConfirmButton_clicked()
         lastnamePopUp->show();
     }
 
+    // Check if all userinput is valid
     if (valid)
     {
+        // Updates data of user in database
         DbManager::updateUser(g_currentUser.getEmail(), firstname, lastname, birthdate);
 
+        // updates UI with the new user info
         updateUI();
 
+        // hides any error messages if shown
         firstnamePopUp->hide();
         lastnamePopUp->hide();
 
+        // goes back to Menu
         emit Back();
     }
 }

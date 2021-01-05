@@ -11,6 +11,7 @@ LoginView::LoginView(QWidget *parent):
     {
         ui->setupUi(this);
 
+        // Initialize PopUpWidget to display error message next to Inputline if necessary
         emailPopUp = new PopUpWidget(this);
     }
 

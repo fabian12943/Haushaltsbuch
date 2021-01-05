@@ -13,6 +13,7 @@ ChangeTransactionView::ChangeTransactionView(QWidget *parent):
     {
         ui->setupUi(this);
 
+        // Initialize PopUpWidgets to display error message next to Inputline if necessary
         amountPopUp = new PopUpWidget(this);
         descriptionPopUp = new PopUpWidget(this);
         categoryPopUp = new PopUpWidget(this);

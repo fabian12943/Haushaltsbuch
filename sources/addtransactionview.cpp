@@ -13,6 +13,7 @@ AddTransactionView::AddTransactionView(QWidget *parent):
     {
         ui->setupUi(this);
 
+        // Initialize PopUpWidgets to display error message next to Inputline if necessary
         amountPopUp = new PopUpWidget(this);
         descriptionPopUp = new PopUpWidget(this);
         categoryPopUp = new PopUpWidget(this);
@@ -32,6 +33,7 @@ void AddTransactionView::on_BackButton_clicked()
 
 void AddTransactionView::on_ConfirmButton_clicked()
 {
+    // Save Userinput to Variables
     QDate transactionDate = ui->transactionDate->date();
     QString type = ui->typeComboBox->currentText();
     QString amount = ui->amountLine->text().trimmed();
@@ -40,13 +42,16 @@ void AddTransactionView::on_ConfirmButton_clicked()
     QString payoption = ui->payoptionComboBox->currentText();
     QString source = ui->sourceLine->text().trimmed();
 
+    // all userinput valid?
     bool valid = true;
 
     unsigned long amountInCent = 0;
+
+    // Check if amount is valid Euro-Currency, otherwise show error message next to the input line
     if (InputCheck::isEuroCurrency(amount))
     {
+        // Check number of '0's that have to be added at the end, so the amount is a valid cent value
         QString centsToAdd = "";
-
         if (amount.contains(","))
         {
             if (amount.contains(QRegExp(",\\d\\d"))) centsToAdd = "";
@@ -54,8 +59,11 @@ void AddTransactionView::on_ConfirmButton_clicked()
         }
         else centsToAdd = "00";
 
+        // Save amount in cent to prevent rounding errors
         amountInCent = (amount.remove(QRegExp("[\\D]"))).append(centsToAdd).toLong();
 
+        // Check if amount input is 0 or too long to be stored in a long variable, otherwise show error
+        // message next to the input line
         if (amountInCent == 0 || amountInCent > ULONG_MAX)
         {
             valid = false;
@@ -75,7 +83,7 @@ void AddTransactionView::on_ConfirmButton_clicked()
             amountPopUp->show();
         }
     }
-    else
+    else // amount is not a valid Euro-Currency -> show error message next to the input line
     {
         valid = false;
 
@@ -93,6 +101,7 @@ void AddTransactionView::on_ConfirmButton_clicked()
         amountPopUp->show();
     }
 
+    // Check if description is not empty, otherwise show error message next to the input line
     if (description.isEmpty())
     {
         valid = false;
@@ -111,6 +120,7 @@ void AddTransactionView::on_ConfirmButton_clicked()
         descriptionPopUp->show();
     }
 
+    // Check if category is not empty, otherwise show error message next to the input line
     if (category.isEmpty())
     {
         valid = false;
@@ -129,22 +139,31 @@ void AddTransactionView::on_ConfirmButton_clicked()
         categoryPopUp->show();
     }
 
+    // Check if payoption is not empty, otherwise set variable to nullptr (makes sure that value
+    // in the database is 'NULL' and not ''
     if (payoption.isEmpty())
     {
         payoption = nullptr;
     }
 
+    // Check if source is not empty, otherwise set variable to nullptr (makes sure that value
+    // in the database is 'NULL' and not ''
     if (source.isEmpty())
     {
         source = nullptr;
     }
 
+    // Check if all input is valid
     if (valid)
     {
         if (!ui->payoptionComboBox->isEnabled()) payoption = nullptr;
+
+        // Create new transaction in the database with given input
         DbManager::addTransaction(g_currentUser.getEmail(), transactionDate,
             type, amountInCent, description, category,
             payoption, source);
+
+        // Reset input form to default
         resetForm();
     }
 }
@@ -161,7 +180,10 @@ void AddTransactionView::on_descriptionLine_editingFinished()
 
 void AddTransactionView::resetForm()
 {
+    // Fill CategoryComboBox with the categories created by the admin
     ui->categoryComboBox->setModel(DbManager::getCategoriesModel());
+
+    // Fill PayoptionComboBox with the payoptions created by the current user
     ui->payoptionComboBox->setModel(DbManager::getPayoptionsModel(g_currentUser.getEmail()));
 
     ui->transactionDate->setDate(QDate::currentDate());
@@ -175,6 +197,7 @@ void AddTransactionView::resetForm()
     ui->payoptionComboBox->setCurrentIndex(0);
     ui->sourceLine->setText("");
 
+    // Hides ErrorPopUps if any were thrown
     amountPopUp->hide();
     descriptionPopUp->hide();
     categoryPopUp->hide();
@@ -183,9 +206,12 @@ void AddTransactionView::resetForm()
 
 void AddTransactionView::on_checkBox_stateChanged(int arg1)
 {
-    if (arg1 == 2)
+    if (arg1 == 2) // checkBox is checked -> User wants to set a payoption
     {
         ui->payoptionComboBox->setEnabled(true);
     }
-    if (arg1 == 0) ui->payoptionComboBox->setEnabled(false);
+    if (arg1 == 0) // checkBox is unchecked -> User does not want to set a payoption
+    {
+        ui->payoptionComboBox->setEnabled(false);
+    }
 }

@@ -14,6 +14,7 @@ AdminRegistrationView::AdminRegistrationView(QWidget *parent): QWidget(parent), 
     ui->birthDate->setDate(QDate::currentDate());
     ui->birthDate->setMaximumDate(QDate::currentDate());
 
+    // Initialize PopUpWidgets to display error message next to Inputline if necessary
     firstnamePopUp = new PopUpWidget(this);
     lastnamePopUp = new PopUpWidget(this);
     emailPopUp = new PopUpWidget(this);
@@ -28,6 +29,7 @@ AdminRegistrationView::~AdminRegistrationView()
 
 void AdminRegistrationView::on_confirmButton_clicked()
 {
+    // Save Userinput to Variables
     QString firstname = ui->firstNameLine->text().toLower().trimmed();
     firstname[0] = firstname[0].toUpper();
     QString lastname = ui->lastNameLine->text().toLower().trimmed();
@@ -36,8 +38,10 @@ void AdminRegistrationView::on_confirmButton_clicked()
     QString password = ui->passwordLine->text();
     QString birthdate = ui->birthDate->text();
 
+    // all userinput valid?
     bool valid = true;
 
+    // Check if firstname is valid otherwise show error message next to the input line
     if (!InputCheck::isValidName(firstname))
     {
         valid = false;
@@ -56,6 +60,7 @@ void AdminRegistrationView::on_confirmButton_clicked()
         firstnamePopUp->show();
     }
 
+    // Check if lastname is valid otherwise show error message next to the input line
     if (!InputCheck::isValidName(lastname))
     {
         valid = false;
@@ -74,6 +79,7 @@ void AdminRegistrationView::on_confirmButton_clicked()
         lastnamePopUp->show();
     }
 
+    // Check if email is valid and not already in use, otherwise show error message next to the input line
     if (!InputCheck::isValidEmail(email) || DbManager::emailExists(email))
     {
         valid = false;
@@ -100,6 +106,7 @@ void AdminRegistrationView::on_confirmButton_clicked()
         emailPopUp->show();
     }
 
+    // Check if password is valid otherwise show error message next to the input line
     if (!InputCheck::isValidPassword(password))
     {
         valid = false;
@@ -118,13 +125,17 @@ void AdminRegistrationView::on_confirmButton_clicked()
         passwordPopUp->show();
     }
 
+    // Check if all input is valid
     if (valid)
     {
         qDebug() << password;
+        // Create new user in the database with given input
         DbManager::addUser(email, firstname, lastname, password, birthdate, 1);
 
+        // Reset input form to default
         resetForm();
 
+        // Send signal to ApplicationView to open LoginView
         emit AdminRegistration();
     }
 }

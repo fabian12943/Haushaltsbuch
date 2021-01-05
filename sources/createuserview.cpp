@@ -12,6 +12,7 @@ CreateUserView::CreateUserView(QWidget *parent):
         ui->birthDate->setDate(QDate::currentDate());
         ui->birthDate->setMaximumDate(QDate::currentDate());
 
+        // Initialize PopUpWidgets to display error message next to Inputline if necessary
         firstnamePopUp = new PopUpWidget(this);
         lastnamePopUp = new PopUpWidget(this);
         emailPopUp = new PopUpWidget(this);

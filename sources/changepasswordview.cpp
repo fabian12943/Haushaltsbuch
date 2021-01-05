@@ -11,6 +11,7 @@ ChangePasswordView::ChangePasswordView(QWidget *parent):
     {
         ui->setupUi(this);
 
+        // Initialize PopUpWidgets to display error message next to Inputline if necessary
         currentPasswordPopUp = new PopUpWidget(this);
         newPasswordPopUp = new PopUpWidget(this);
     }
@@ -28,17 +29,24 @@ void ChangePasswordView::on_BackButton_clicked()
 
 void ChangePasswordView::on_ConfirmButton_clicked()
 {
+    // Saves userinput to variables
     QString currentPassword = ui->CurrentPasswordLine->text();
     QString newPassword = ui->NewPasswordLine->text();
     QString confirmNewPassword = ui->ConfirmNewPasswordLine->text();
 
+    // All userinput valid?
     bool valid = true;
 
+    // Get hashed password of user from database
     QString hashedDbPassword = DbManager::getPassword(g_currentUser.getEmail());
 
+    // Get salt of user from database and combine it with userinput of current password
     QString saltedCurrentPassword = DbManager::getSalt(g_currentUser.getEmail()) + currentPassword;
+
+    // Hash the salted userinput of current password
     QByteArray hashedPassword = Hashing::hash_sha256(saltedCurrentPassword);
 
+    // Check if passwords match, otherwise show error message next to userinput
     if (hashedDbPassword != hashedPassword)
     {
         valid = false;
@@ -56,8 +64,10 @@ void ChangePasswordView::on_ConfirmButton_clicked()
         currentPasswordPopUp->show();
     }
 
+    // Check if both userinputs of the new password match, otherwise show error message
     if (newPassword == confirmNewPassword)
     {
+        // Check if new password is valid, otherwise show error message
         if (!InputCheck::isValidPassword(newPassword))
         {
             valid = false;
@@ -92,12 +102,16 @@ void ChangePasswordView::on_ConfirmButton_clicked()
         newPasswordPopUp->show();
     }
 
+    // Check if all inputs are valid
     if (valid)
     {
+        // Change password of user in database
         DbManager::changePassword(g_currentUser.getEmail(), newPassword);
 
+        // Reset userinput form
         resetForm();
 
+        // Go back to Menu
         emit Back();
     }
 }

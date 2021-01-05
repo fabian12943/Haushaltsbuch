@@ -5,6 +5,7 @@ UserDAO::UserDAO(){}
 
 bool UserDAO::addUser(const QString &email, const QString &firstname, const QString &lastname, const QString &password, const QString &birthdate, const int isAdmin)
 {
+    // Create random salt for password hashing
     quint32 saltQuint = QRandomGenerator::global()->generate();
     QString salt = QString::number(saltQuint);
 
