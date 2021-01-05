@@ -43,7 +43,6 @@ private slots:
 
 private:
     Ui::ApplicationView *ui;
-
     AdminRegistrationView _AdminRegistration;
     LoginView _Login;
     NoPasswordLoginView _NoPasswordLogin;

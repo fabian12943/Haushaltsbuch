@@ -1,10 +1,7 @@
 #include "hashing.h"
 #include <QCryptographicHash>
 
-Hashing::Hashing()
-{
-
-}
+Hashing::Hashing() {}
 
 QByteArray Hashing::hash_sha256(QString input)
 {

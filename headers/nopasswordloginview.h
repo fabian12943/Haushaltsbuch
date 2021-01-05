@@ -23,11 +23,8 @@ private slots:
     void on_LoginButton_clicked();
     void on_BackButton_clicked();
     void resetForm();
-
     void on_PasswordLine_editingFinished();
-
     void on_ConfirmPasswordLine_editingFinished();
-
     void on_ConfirmPasswordLine_returnPressed();
 
 private:

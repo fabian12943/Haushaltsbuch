@@ -33,7 +33,6 @@ signals:
     void ChangeTransaction(QStringList);
 
 private slots:
-
     void on_infoButton_clicked();
     void on_passwordButton_clicked();
     void on_payoptionButton_clicked();

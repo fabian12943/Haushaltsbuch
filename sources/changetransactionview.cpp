@@ -3,22 +3,21 @@
 #include "dbmanager.h"
 #include "global.h"
 #include "inputcheck.h"
+#include "limits.h"
 #include <QRegExp>
 #include <string>
-#include "limits.h"
 
-ChangeTransactionView::ChangeTransactionView(QWidget *parent) :
+ChangeTransactionView::ChangeTransactionView(QWidget *parent):
     QWidget(parent),
     ui(new Ui::ChangeTransactionView)
-{
-    ui->setupUi(this);
+    {
+        ui->setupUi(this);
 
-    amountPopUp = new PopUpWidget(this);
-    descriptionPopUp = new PopUpWidget(this);
-    categoryPopUp = new PopUpWidget(this);
-    payoptionPopUp = new PopUpWidget(this);
-
-}
+        amountPopUp = new PopUpWidget(this);
+        descriptionPopUp = new PopUpWidget(this);
+        categoryPopUp = new PopUpWidget(this);
+        payoptionPopUp = new PopUpWidget(this);
+    }
 
 ChangeTransactionView::~ChangeTransactionView()
 {
@@ -57,7 +56,7 @@ void ChangeTransactionView::on_ConfirmButton_clicked()
 
         amountInCent = (amount.remove(QRegExp("[\\D]"))).append(centsToAdd).toLong();
 
-        if (amountInCent == 0 || amountInCent > ULONG_MAX )
+        if (amountInCent == 0 || amountInCent > ULONG_MAX)
         {
             valid = false;
 
@@ -69,9 +68,9 @@ void ChangeTransactionView::on_ConfirmButton_clicked()
             const int posY = -globalPos.y();
 
             amountPopUp->setGeometry(posX + ui->amountLine->width(),
-                                   posY - ui->amountLine->height() / 2,
-                                   amountPopUp->width(),
-                                   amountPopUp->height());
+                posY - ui->amountLine->height() / 2,
+                amountPopUp->width(),
+                amountPopUp->height());
 
             amountPopUp->show();
         }
@@ -87,9 +86,9 @@ void ChangeTransactionView::on_ConfirmButton_clicked()
         const int posY = -globalPos.y();
 
         amountPopUp->setGeometry(posX + ui->amountLine->width(),
-                               posY - ui->amountLine->height() / 2,
-                               amountPopUp->width(),
-                               amountPopUp->height());
+            posY - ui->amountLine->height() / 2,
+            amountPopUp->width(),
+            amountPopUp->height());
 
         amountPopUp->show();
     }
@@ -105,9 +104,9 @@ void ChangeTransactionView::on_ConfirmButton_clicked()
         const int posY = -globalPos.y();
 
         descriptionPopUp->setGeometry(posX + ui->descriptionLine->width(),
-                               posY - ui->descriptionLine->height() / 2,
-                               descriptionPopUp->width(),
-                               descriptionPopUp->height());
+            posY - ui->descriptionLine->height() / 2,
+            descriptionPopUp->width(),
+            descriptionPopUp->height());
 
         descriptionPopUp->show();
     }
@@ -123,19 +122,20 @@ void ChangeTransactionView::on_ConfirmButton_clicked()
         const int posY = -globalPos.y();
 
         categoryPopUp->setGeometry(posX + ui->categoryComboBox->width(),
-                               posY - ui->categoryComboBox->height() / 2,
-                               categoryPopUp->width(),
-                               categoryPopUp->height());
+            posY - ui->categoryComboBox->height() / 2,
+            categoryPopUp->width(),
+            categoryPopUp->height());
 
         categoryPopUp->show();
     }
 
     if (payoption.isEmpty())
     {
-          payoption = nullptr;
+        payoption = nullptr;
     }
 
-    if (source.isEmpty()){
+    if (source.isEmpty())
+    {
         source = nullptr;
     }
 
@@ -143,8 +143,8 @@ void ChangeTransactionView::on_ConfirmButton_clicked()
     {
         if (!ui->payoptionComboBox->isEnabled()) payoption = nullptr;
         bool success = DbManager::addTransaction(g_currentUser.getEmail(), transactionDate,
-                                  type, amountInCent, description, category,
-                                  payoption, source);
+            type, amountInCent, description, category,
+            payoption, source);
 
         if (success) DbManager::removeTransaction(transId);
 
@@ -152,7 +152,6 @@ void ChangeTransactionView::on_ConfirmButton_clicked()
 
         emit Back();
     }
-
 }
 
 void ChangeTransactionView::on_amountLine_editingFinished()
@@ -202,8 +201,8 @@ void ChangeTransactionView::loadTransaction(QStringList values)
     }
     ui->sourceLine->setText(values[5]);
     ui->sourceLine->setPlaceholderText(values[5]);
-    ui->amountLine->setText(values[6].replace(".",",") + " €");
-    ui->amountLine->setPlaceholderText(values[6].replace(".",",") + " €");
+    ui->amountLine->setText(values[6].replace(".", ",") + " €");
+    ui->amountLine->setPlaceholderText(values[6].replace(".", ",") + " €");
     ui->descriptionLine->setText(values[7]);
     ui->descriptionLine->setPlaceholderText(values[7]);
 

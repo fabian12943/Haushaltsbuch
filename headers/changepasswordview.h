@@ -20,15 +20,10 @@ signals:
 
 private slots:
     void on_BackButton_clicked();
-
     void on_ConfirmButton_clicked();
-
     void on_CurrentPasswordLine_editingFinished();
-
     void on_NewPasswordLine_editingFinished();
-
     void on_ConfirmNewPasswordLine_editingFinished();
-
     void resetForm();
 
 private:

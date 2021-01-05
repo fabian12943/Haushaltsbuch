@@ -6,8 +6,10 @@
 
 
 class NumberFormatDelegate : public QStyledItemDelegate{
+
     Q_OBJECT
     Q_DISABLE_COPY(NumberFormatDelegate)
+
 public:
     NumberFormatDelegate(QObject *parent = Q_NULLPTR);
     QString displayText(const QVariant &value, const QLocale &locale) const Q_DECL_OVERRIDE{

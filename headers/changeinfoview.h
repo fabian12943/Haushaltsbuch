@@ -20,11 +20,8 @@ signals:
 
 private slots:
     void on_BackButton_clicked();
-
     void on_ConfirmButton_clicked();
-
     void on_firstNameLine_editingFinished();
-
     void on_lastNameLine_editingFinished();
 
 private:

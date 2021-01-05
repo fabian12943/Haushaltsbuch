@@ -1,10 +1,9 @@
 #include "dbmanager.h"
+#include "hashing.h"
 #include <QApplication>
 #include <QtSql>
 #include <QDebug>
 #include <iostream>
-#include "hashing.h"
-
 
 DbManager::DbManager()
 {
@@ -41,17 +40,18 @@ bool DbManager::createTables()
 {
     QSqlQuery query;
 
-    if ( !(m_db.tables().contains( QLatin1String("user")))) {
+    if (!(m_db.tables().contains(QLatin1String("user"))))
+    {
         query.prepare("CREATE TABLE user"
-                      "(email TEXT PRIMARY KEY,"
-                      "firstname TEXT NOT NULL,"
-                      "lastname TEXT NOT NULL,"
-                      "password TEXT,"
-                      "salt TEXT NOT NULL,"
-                      "birthdate TEXT NOT NULL,"
-                      "is_admin INTEGER NOT NULL,"
-                      "is_blocked INTEGER NOT NULL DEFAULT 0,"
-                      "recent_failed_logins INTEGER NOT NULL DEFAULT 0)");
+            "(email TEXT PRIMARY KEY,"
+            "firstname TEXT NOT NULL,"
+            "lastname TEXT NOT NULL,"
+            "password TEXT,"
+            "salt TEXT NOT NULL,"
+            "birthdate TEXT NOT NULL,"
+            "is_admin INTEGER NOT NULL,"
+            "is_blocked INTEGER NOT NULL DEFAULT 0,"
+            "recent_failed_logins INTEGER NOT NULL DEFAULT 0)");
 
         if (!query.exec())
         {
@@ -60,12 +60,13 @@ bool DbManager::createTables()
         }
     }
 
-    if ( !(m_db.tables().contains( QLatin1String("payoptions")))) {
+    if (!(m_db.tables().contains(QLatin1String("payoptions"))))
+    {
         query.prepare("CREATE TABLE payoptions"
-                      "(email TEXT NOT NULL,"
-                      "payoption TEXT NOT NULL,"
-                      "PRIMARY KEY (email, payoption),"
-                      "FOREIGN KEY (email) REFERENCES user(email) ON DELETE CASCADE)");
+            "(email TEXT NOT NULL,"
+            "payoption TEXT NOT NULL,"
+            "PRIMARY KEY (email, payoption),"
+            "FOREIGN KEY (email) REFERENCES user(email) ON DELETE CASCADE)");
 
         if (!query.exec())
         {
@@ -74,12 +75,13 @@ bool DbManager::createTables()
         }
     }
 
-    if ( !(m_db.tables().contains( QLatin1String("categories")))) {
+    if (!(m_db.tables().contains(QLatin1String("categories"))))
+    {
         query.prepare("CREATE TABLE categories"
-                      "(email TEXT NOT NULL,"
-                      "category TEXT NOT NULL,"
-                      "PRIMARY KEY (email, category),"
-                      "FOREIGN KEY (email) REFERENCES user(email) ON DELETE CASCADE)");
+            "(email TEXT NOT NULL,"
+            "category TEXT NOT NULL,"
+            "PRIMARY KEY (email, category),"
+            "FOREIGN KEY (email) REFERENCES user(email) ON DELETE CASCADE)");
 
         if (!query.exec())
         {
@@ -88,18 +90,19 @@ bool DbManager::createTables()
         }
     }
 
-    if ( !(m_db.tables().contains( QLatin1String("transactions")))) {
+    if (!(m_db.tables().contains(QLatin1String("transactions"))))
+    {
         query.prepare("CREATE TABLE transactions"
-                      "(transId INTEGER PRIMARY KEY AUTOINCREMENT,"
-                      "email TEXT NOT NULL,"
-                      "date TEXT NOT NULL,"
-                      "type TEXT NOT NULL CHECK (type IN ('Einnahme', 'Ausgabe')),"
-                      "amountInCent L NOT NULL,"
-                      "description TEXT NOT NULL,"
-                      "category TEXT NOT NULL,"
-                      "payoption TEXT,"
-                      "source TEXT,"
-                      "FOREIGN KEY (email) REFERENCES user(email) ON DELETE CASCADE)");
+            "(transId INTEGER PRIMARY KEY AUTOINCREMENT,"
+            "email TEXT NOT NULL,"
+            "date TEXT NOT NULL,"
+            "type TEXT NOT NULL CHECK (type IN ('Einnahme', 'Ausgabe')),"
+            "amountInCent L NOT NULL,"
+            "description TEXT NOT NULL,"
+            "category TEXT NOT NULL,"
+            "payoption TEXT,"
+            "source TEXT,"
+            "FOREIGN KEY (email) REFERENCES user(email) ON DELETE CASCADE)");
 
         if (!query.exec())
         {
@@ -113,21 +116,21 @@ bool DbManager::createTables()
 
 void DbManager::deleteAllTables()
 {
-   QStringList tables = { "user", "payoptions", "categories", "transactions", "sqlite_sequence" };
+    QStringList tables = { "user", "payoptions", "categories", "transactions", "sqlite_sequence" };
 
-   for (int i = 0; i < tables.size(); ++i)
-   {
-       deleteTable(tables[i]);
-   }
+    for (int i = 0; i < tables.size(); ++i)
+    {
+        deleteTable(tables[i]);
+    }
 
-   qDebug() << "Database: all tables cleaned";
+    qDebug() << "Database: all tables cleaned";
 }
 
 bool DbManager::deleteTable(QString tablename)
 {
     QSqlQuery deleteQuery;
 
-    if ( (m_db.tables().contains(tablename)))
+    if ((m_db.tables().contains(tablename)))
     {
         deleteQuery.prepare("DELETE FROM " + tablename);
 
@@ -189,19 +192,17 @@ bool DbManager::insertTestData()
     return true;
 }
 
-bool DbManager::addUser(const QString& email, const QString& firstname,
-                           const QString& lastname, const QString& password,
-                           const QString& birthdate, const int isAdmin)
+bool DbManager::addUser(const QString &email, const QString &firstname, const QString &lastname, const QString &password, const QString &birthdate, const int isAdmin)
 {
     quint32 saltQuint = QRandomGenerator::global()->generate();
     QString salt = QString::number(saltQuint);
 
     QSqlQuery queryAdd;
     queryAdd.prepare("INSERT INTO user(email, firstname, lastname,"
-                     "salt, birthdate, is_admin, is_blocked, recent_failed_logins) VALUES"
-                     "(:email,"
-                     ":firstname, :lastname, :salt,"
-                     ":birthdate, :isAdmin, 0, 0)");
+        "salt, birthdate, is_admin, is_blocked, recent_failed_logins) VALUES"
+        "(:email,"
+        ":firstname, :lastname, :salt,"
+        ":birthdate, :isAdmin, 0, 0)");
     queryAdd.bindValue(":email", email);
     queryAdd.bindValue(":firstname", firstname);
     queryAdd.bindValue(":lastname", lastname);
@@ -209,7 +210,7 @@ bool DbManager::addUser(const QString& email, const QString& firstname,
     queryAdd.bindValue(":birthdate", birthdate);
     queryAdd.bindValue(":isAdmin", isAdmin);
 
-    if(queryAdd.exec())
+    if (queryAdd.exec())
     {
         qDebug() << "Database: user " << email << " added successfully";
         changePassword(email, password);
@@ -226,15 +227,15 @@ bool DbManager::updateUser(const QString &email, const QString &firstname, const
 {
     QSqlQuery changeQuery;
     changeQuery.prepare("UPDATE user SET firstname = (:firstname),"
-                        "lastname = (:lastname), birthdate = (:birthdate)"
-                        "WHERE email = (:email)");
+        "lastname = (:lastname), birthdate = (:birthdate)"
+        "WHERE email = (:email)");
 
     changeQuery.bindValue(":email", email);
     changeQuery.bindValue(":firstname", firstname);
     changeQuery.bindValue(":lastname", lastname);
     changeQuery.bindValue(":birthdate", birthdate);
 
-    if(changeQuery.exec())
+    if (changeQuery.exec())
     {
         qDebug() << "Database: user " << email << " updated successfully";
         return true;
@@ -252,7 +253,7 @@ bool DbManager::deleteUser(const QString &email)
     queryDelete.prepare("DELETE FROM user WHERE email = (:email)");
     queryDelete.bindValue(":email", email);
 
-    if(queryDelete.exec())
+    if (queryDelete.exec())
     {
         qDebug() << "Database: user " << email << " deleted successfully";
         return true;
@@ -268,11 +269,11 @@ bool DbManager::blockUser(const QString &email)
 {
     QSqlQuery changeQuery;
     changeQuery.prepare("UPDATE user SET is_blocked = (1)"
-                        "WHERE email = (:email)");
+        "WHERE email = (:email)");
 
     changeQuery.bindValue(":email", email);
 
-    if(changeQuery.exec())
+    if (changeQuery.exec())
     {
         qDebug() << "Database: user " << email << " blocked successfully";
         return true;
@@ -288,11 +289,11 @@ bool DbManager::unblockUser(const QString &email)
 {
     QSqlQuery changeQuery;
     changeQuery.prepare("UPDATE user SET is_blocked = (0)"
-                        "WHERE email = (:email)");
+        "WHERE email = (:email)");
 
     changeQuery.bindValue(":email", email);
 
-    if(changeQuery.exec())
+    if (changeQuery.exec())
     {
         qDebug() << "Database: user " << email << " unblocked successfully";
         return true;
@@ -308,11 +309,11 @@ bool DbManager::increaseRecentFailedLoginCounter(const QString &email)
 {
     QSqlQuery changeQuery;
     changeQuery.prepare("UPDATE user SET recent_failed_logins = (recent_failed_logins + 1)"
-                        "WHERE email = (:email)");
+        "WHERE email = (:email)");
 
     changeQuery.bindValue(":email", email);
 
-    if(changeQuery.exec())
+    if (changeQuery.exec())
     {
         qDebug() << "Database: user " << email << " failed_login_counter increased by 1";
 
@@ -335,11 +336,11 @@ bool DbManager::resetRecentFailedLoginCounter(const QString &email)
 {
     QSqlQuery changeQuery;
     changeQuery.prepare("UPDATE user SET recent_failed_logins = (0)"
-                        "WHERE email = (:email)");
+        "WHERE email = (:email)");
 
     changeQuery.bindValue(":email", email);
 
-    if(changeQuery.exec())
+    if (changeQuery.exec())
     {
         qDebug() << "Database: user " << email << " failed_login_counter reset";
         return true;
@@ -418,13 +419,11 @@ QString DbManager::getPassword(const QString &email)
         query.first();
         QString password = query.value(0).toString();
         return password;
-
     }
     else
     {
         return nullptr;
     }
-
 }
 
 QString DbManager::getFirstName(const QString &email)
@@ -438,7 +437,6 @@ QString DbManager::getFirstName(const QString &email)
         query.first();
         QString firstname = query.value(0).toString();
         return firstname;
-
     }
     else
     {
@@ -457,7 +455,6 @@ QString DbManager::getLastName(const QString &email)
         query.first();
         QString lastname = query.value(0).toString();
         return lastname;
-
     }
     else
     {
@@ -476,7 +473,6 @@ QString DbManager::getBirthdate(const QString &email)
         query.first();
         QString birthdate = query.value(0).toString();
         return birthdate;
-
     }
     else
     {
@@ -495,7 +491,6 @@ QString DbManager::getSalt(const QString &email)
         query.first();
         QString salt = query.value(0).toString();
         return salt;
-
     }
     else
     {
@@ -514,7 +509,6 @@ int DbManager::getFailedLoginCounter(const QString &email)
         query.first();
         int recentFailedLogins = query.value(0).toInt();
         return recentFailedLogins;
-
     }
     else
     {
@@ -576,7 +570,7 @@ bool DbManager::changePassword(const QString &email, const QString &password)
     queryAdd.bindValue(":email", email);
     queryAdd.bindValue(":password", hashedSaltedPassword);
 
-    if(queryAdd.exec())
+    if (queryAdd.exec())
     {
         qDebug() << "Database: password of user " << email << " changed successfully";
         return true;
@@ -594,10 +588,10 @@ QSqlQueryModel *DbManager::getUserModel()
     QSqlQuery query;
 
     query.prepare("SELECT email AS `E-Mail`, firstname AS `Vorname`, lastname AS `Nachname`,"
-                  "birthdate AS `Geburtsdatum`, is_blocked AS `gesperrt?`, password AS `Passwort?`"
-                  "FROM user WHERE is_admin = (0)");
+        "birthdate AS `Geburtsdatum`, is_blocked AS `gesperrt?`, password AS `Passwort?`"
+        "FROM user WHERE is_admin = (0)");
 
-    if(query.exec())
+    if (query.exec())
     {
         model->setQuery(query);
         return model;
@@ -612,13 +606,13 @@ bool DbManager::addCategory(const QString &email, const QString &category)
 {
     QSqlQuery queryAdd;
     queryAdd.prepare("INSERT INTO categories VALUES"
-                     "(:email, :category)");
+        "(:email, :category)");
     queryAdd.bindValue(":email", email);
     queryAdd.bindValue(":category", category);
 
-    if(queryAdd.exec())
+    if (queryAdd.exec())
     {
-        qDebug() << "Database: category " << category << " for user " << email << + " added successfully";
+        qDebug() << "Database: category " << category << " for user " << email << +" added successfully";
         return true;
     }
     else
@@ -632,7 +626,7 @@ bool DbManager::removeCategory(const QString &email, const QString &category)
 {
     QSqlQuery checkQuery;
 
-    checkQuery.prepare("SELECT * FROM transactions WHERE category = (:category)");
+    checkQuery.prepare("SELECT *FROM transactions WHERE category = (:category)");
     checkQuery.bindValue(":category", category);
 
     if (checkQuery.exec())
@@ -651,7 +645,7 @@ bool DbManager::removeCategory(const QString &email, const QString &category)
 
     if (queryDelete.exec())
     {
-        qDebug() << "Database: category " << category << " for user " << email << + " deleted successfully";
+        qDebug() << "Database: category " << category << " for user " << email << +" deleted successfully";
         return true;
     }
     else
@@ -661,14 +655,14 @@ bool DbManager::removeCategory(const QString &email, const QString &category)
     }
 }
 
-QSqlQueryModel* DbManager::getCategoriesModel()
+QSqlQueryModel *DbManager::getCategoriesModel()
 {
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery query;
 
     query.prepare("SELECT category FROM categories");
 
-    if(query.exec())
+    if (query.exec())
     {
         model->setQuery(query);
         return model;
@@ -703,13 +697,13 @@ bool DbManager::addPayoption(const QString &email, const QString &payoption)
 {
     QSqlQuery queryAdd;
     queryAdd.prepare("INSERT INTO payoptions VALUES"
-                     "(:email, :payoption)");
+        "(:email, :payoption)");
     queryAdd.bindValue(":email", email);
     queryAdd.bindValue(":payoption", payoption);
 
-    if(queryAdd.exec())
+    if (queryAdd.exec())
     {
-        qDebug() << "Database: payoption " << payoption << " for user " << email << + " added successfully";
+        qDebug() << "Database: payoption " << payoption << " for user " << email << +" added successfully";
         return true;
     }
     else
@@ -723,7 +717,7 @@ bool DbManager::removePayoption(const QString &email, const QString &payoption)
 {
     QSqlQuery checkQuery;
 
-    checkQuery.prepare("SELECT * FROM transactions WHERE email = (:email) AND payoption = (:payoption)");
+    checkQuery.prepare("SELECT *FROM transactions WHERE email = (:email) AND payoption = (:payoption)");
     checkQuery.bindValue(":email", email);
     checkQuery.bindValue(":payoption", payoption);
 
@@ -741,9 +735,9 @@ bool DbManager::removePayoption(const QString &email, const QString &payoption)
     queryDelete.bindValue(":email", email);
     queryDelete.bindValue(":payoption", payoption);
 
-    if(queryDelete.exec())
+    if (queryDelete.exec())
     {
-        qDebug() << "Database: payoption " << payoption << " for user " << email << + " deleted successfully";
+        qDebug() << "Database: payoption " << payoption << " for user " << email << +" deleted successfully";
         return true;
     }
     else
@@ -760,7 +754,7 @@ QSqlQueryModel *DbManager::getPayoptionsModel(const QString &email)
 
     query.prepare("SELECT DISTINCT payoption FROM payoptions WHERE email = (:email)");
     query.bindValue(":email", email);
-    if(query.exec())
+    if (query.exec())
     {
         model->setQuery(query);
         return model;
@@ -791,18 +785,15 @@ bool DbManager::payOptionExist(const QString &email, const QString &payoption)
     return exists;
 }
 
-bool DbManager::addTransaction(const QString &email, const QDate &date,
-                               const QString &type, const int amountInCent,
-                               const QString &description, const QString &category,
-                               const QString &payoption, const QString &source)
+bool DbManager::addTransaction(const QString &email, const QDate &date, const QString &type, const int amountInCent, const QString &description, const QString &category, const QString &payoption, const QString &source)
 {
     QString strDate = date.toString("yyyy-MM-dd");
     QSqlQuery queryAdd;
     queryAdd.prepare("INSERT INTO transactions"
-                     "(email, date, type, amountInCent, description,"
-                     "category, payoption, source) VALUES"
-                     "(:email, :date, :type, :amountInCent, :description,"
-                     ":category, :payoption, :source)");
+        "(email, date, type, amountInCent, description,"
+        "category, payoption, source) VALUES"
+        "(:email, :date, :type, :amountInCent, :description,"
+        ":category, :payoption, :source)");
     queryAdd.bindValue(":email", email);
     queryAdd.bindValue(":date", strDate);
     queryAdd.bindValue(":type", type);
@@ -812,9 +803,9 @@ bool DbManager::addTransaction(const QString &email, const QDate &date,
     queryAdd.bindValue(":payoption", payoption);
     queryAdd.bindValue(":source", source);
 
-    if(queryAdd.exec())
+    if (queryAdd.exec())
     {
-        qDebug() << "Database: transaction " << description << " for user " << email << + " added successfully";
+        qDebug() << "Database: transaction " << description << " for user " << email << +" added successfully";
         return true;
     }
     else
@@ -831,7 +822,7 @@ bool DbManager::removeTransaction(const int &transId)
     queryDelete.prepare("DELETE FROM transactions WHERE transId = (:transId)");
     queryDelete.bindValue(":transId", transId);
 
-    if(queryDelete.exec())
+    if (queryDelete.exec())
     {
         qDebug() << "Database: transaction " << transId << " deleted successfully";
         return true;
@@ -843,8 +834,7 @@ bool DbManager::removeTransaction(const int &transId)
     }
 }
 
-QSqlQueryModel *DbManager::getTransactionsModel(const QString &email, const QDate &fromDate, const QDate &toDate,
-                                                const QString &category, const bool &grouped)
+QSqlQueryModel *DbManager::getTransactionsModel(const QString &email, const QDate &fromDate, const QDate &toDate, const QString &category, const bool &grouped)
 {
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery query;
@@ -852,11 +842,11 @@ QSqlQueryModel *DbManager::getTransactionsModel(const QString &email, const QDat
     if (!category.isEmpty() && !grouped)
     {
         query.prepare("SELECT transId AS `ID`, date AS `Datum`, type AS `Typ`,"
-                      "category AS `Kategorie`, payoption AS `Zahlungsart`,"
-                      "source AS `Quelle`, (amountInCent / 100.00) AS `Betrag`, description AS `Beschreibung`"
-                      "FROM transactions WHERE email = (:email) AND "
-                      "date >= (:fromDate) AND date <= (:toDate) AND category = (:category)"
-                      "ORDER BY date DESC");
+            "category AS `Kategorie`, payoption AS `Zahlungsart`,"
+            "source AS `Quelle`, (amountInCent / 100.00) AS `Betrag`, description AS `Beschreibung`"
+            "FROM transactions WHERE email = (:email) AND "
+            "date >= (:fromDate) AND date <= (:toDate) AND category = (:category)"
+            "ORDER BY date DESC");
         query.bindValue(":email", email);
         query.bindValue(":fromDate", fromDate.toString("yyyy-MM-dd"));
         query.bindValue(":toDate", toDate.toString("yyyy-MM-dd"));
@@ -866,11 +856,11 @@ QSqlQueryModel *DbManager::getTransactionsModel(const QString &email, const QDat
     if (category.isEmpty() && grouped)
     {
         query.prepare("SELECT transId AS `ID`, date AS `Datum`, type AS `Typ`,"
-                      "category AS `Kategorie`, payoption AS `Zahlungsart`,"
-                      "source AS `Quelle`, (amountInCent / 100.00) AS `Betrag`, description AS `Beschreibung`"
-                      "FROM transactions WHERE email = (:email) AND "
-                      "date >= (:fromDate) AND date <= (:toDate) "
-                      "ORDER BY category ASC, date DESC");
+            "category AS `Kategorie`, payoption AS `Zahlungsart`,"
+            "source AS `Quelle`, (amountInCent / 100.00) AS `Betrag`, description AS `Beschreibung`"
+            "FROM transactions WHERE email = (:email) AND "
+            "date >= (:fromDate) AND date <= (:toDate) "
+            "ORDER BY category ASC, date DESC");
         query.bindValue(":email", email);
         query.bindValue(":fromDate", fromDate.toString("yyyy-MM-dd"));
         query.bindValue(":toDate", toDate.toString("yyyy-MM-dd"));
@@ -879,17 +869,17 @@ QSqlQueryModel *DbManager::getTransactionsModel(const QString &email, const QDat
     if (category.isEmpty() && !grouped)
     {
         query.prepare("SELECT transId AS `ID`, date AS `Datum`, type AS `Typ`,"
-                      "category AS `Kategorie`, payoption AS `Zahlungsart`,"
-                      "source AS `Quelle`, (amountInCent / 100.00) AS `Betrag`, description AS `Beschreibung`"
-                      "FROM transactions WHERE email = (:email) AND "
-                      "date >= (:fromDate) AND date <= (:toDate) "
-                      "ORDER BY date DESC");
+            "category AS `Kategorie`, payoption AS `Zahlungsart`,"
+            "source AS `Quelle`, (amountInCent / 100.00) AS `Betrag`, description AS `Beschreibung`"
+            "FROM transactions WHERE email = (:email) AND "
+            "date >= (:fromDate) AND date <= (:toDate) "
+            "ORDER BY date DESC");
         query.bindValue(":email", email);
         query.bindValue(":fromDate", fromDate.toString("yyyy-MM-dd"));
         query.bindValue(":toDate", toDate.toString("yyyy-MM-dd"));
     }
 
-    if(query.exec())
+    if (query.exec())
     {
         model->setQuery(query);
         return model;
@@ -899,4 +889,3 @@ QSqlQueryModel *DbManager::getTransactionsModel(const QString &email, const QDat
         return nullptr;
     }
 }
-

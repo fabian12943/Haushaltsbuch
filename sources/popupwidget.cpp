@@ -1,25 +1,24 @@
 #include "popupwidget.h"
-
 #include <QPainter>
 
-PopUpWidget::PopUpWidget(QWidget *parent) :
+PopUpWidget::PopUpWidget(QWidget *parent):
     QWidget(parent)
-{
-    resize(200, 42);
+    {
+        resize(200, 42);
 
-    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-    setAttribute(Qt::WA_TranslucentBackground);
-    setAttribute(Qt::WA_ShowWithoutActivating);
+        setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
+        setAttribute(Qt::WA_TranslucentBackground);
+        setAttribute(Qt::WA_ShowWithoutActivating);
 
-    animation.setTargetObject(this);
-    animation.setPropertyName("popupOpacity");
-    animation.setDuration(150);
+        animation.setTargetObject(this);
+        animation.setPropertyName("popupOpacity");
+        animation.setDuration(150);
 
-    label.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+        label.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
-    layout.addWidget(&label, 0, 0);
-    setLayout(&layout);
-}
+        layout.addWidget(&label, 0, 0);
+        setLayout(&layout);
+    }
 
 void PopUpWidget::paintEvent(QPaintEvent *e)
 {
@@ -53,8 +52,7 @@ void PopUpWidget::paintEvent(QPaintEvent *e)
     painter.setBrush(QBrush(Qt::gray));
 
     // Draw the popup pointer
-    const QPointF points[3] = {
-        QPoint(roundedRectDimensions.x(), roundedRectDimensions.height() / 2 - 5 + 3),
+    const QPointF points[3] = { QPoint(roundedRectDimensions.x(), roundedRectDimensions.height() / 2 - 5 + 3),
         QPoint(roundedRectDimensions.x(), roundedRectDimensions.height() / 2 + 5 + 3),
         QPoint(roundedRectDimensions.x() - 5, roundedRectDimensions.height() / 2 + 3)
     };

@@ -4,16 +4,16 @@
 #include "inputcheck.h"
 #include "dbmanager.h"
 
-ChangeInfoView::ChangeInfoView(QWidget *parent) :
+ChangeInfoView::ChangeInfoView(QWidget *parent):
     QWidget(parent),
     ui(new Ui::ChangeInfoView)
-{
-    ui->setupUi(this);
+    {
+        ui->setupUi(this);
 
-    ui->birthDate->setMaximumDate(QDate::currentDate());
-    firstnamePopUp = new PopUpWidget(this);
-    lastnamePopUp = new PopUpWidget(this);
-}
+        ui->birthDate->setMaximumDate(QDate::currentDate());
+        firstnamePopUp = new PopUpWidget(this);
+        lastnamePopUp = new PopUpWidget(this);
+    }
 
 ChangeInfoView::~ChangeInfoView()
 {
@@ -32,7 +32,7 @@ void ChangeInfoView::updateUI()
     ui->lastNameLine->setText(lastName);
     ui->lastNameLine->setPlaceholderText(lastName);
 
-    QDate birthdate = QDate::fromString(g_currentUser.getBirthdate(),"dd.MM.yyyy");
+    QDate birthdate = QDate::fromString(g_currentUser.getBirthdate(), "dd.MM.yyyy");
     ui->birthDate->setDate(birthdate);
 
     ui->firstNameLine->setFocus();
@@ -69,9 +69,9 @@ void ChangeInfoView::on_ConfirmButton_clicked()
         const int posY = -globalPos.y();
 
         firstnamePopUp->setGeometry(posX + ui->firstNameLine->width(),
-                               posY - ui->firstNameLine->height() / 2,
-                               firstnamePopUp->width(),
-                               firstnamePopUp->height());
+            posY - ui->firstNameLine->height() / 2,
+            firstnamePopUp->width(),
+            firstnamePopUp->height());
 
         firstnamePopUp->show();
     }
@@ -87,9 +87,9 @@ void ChangeInfoView::on_ConfirmButton_clicked()
         const int posY = -globalPos.y();
 
         lastnamePopUp->setGeometry(posX + ui->lastNameLine->width(),
-                               posY - ui->lastNameLine->height() / 2,
-                               lastnamePopUp->width(),
-                               lastnamePopUp->height());
+            posY - ui->lastNameLine->height() / 2,
+            lastnamePopUp->width(),
+            lastnamePopUp->height());
 
         lastnamePopUp->show();
     }

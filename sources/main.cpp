@@ -1,13 +1,7 @@
-#include "adminregistrationview.h"
-#include "menuview.h"
-#include "addtransactionview.h"
-#include <iostream>
-#include <QApplication>
-#include <QtSql>
 #include "applicationview.h"
 #include "dbmanager.h"
-#include "inputcheck.h"
 #include "global.h"
+#include <QApplication>
 
 User g_currentUser = User();
 
@@ -23,7 +17,6 @@ int main(int argc, char *argv[])
         if (argv[i] == std::string("clean"))
         {
             db.deleteAllTables();
-
         }
         if (argv[i] == std::string("test"))
         {

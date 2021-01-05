@@ -1,11 +1,7 @@
 #include "inputcheck.h"
-
 #include <QRegExp>
 
-InputCheck::InputCheck()
-{
-
-}
+InputCheck::InputCheck() {}
 
 bool InputCheck::isValidName(QString name)
 {
@@ -40,5 +36,3 @@ bool InputCheck::isEuroCurrency(QString amount)
 
     return rx.exactMatch(amount);
 }
-
-

@@ -3,15 +3,15 @@
 #include "global.h"
 #include "dbmanager.h"
 
-PayOptionsView::PayOptionsView(QWidget *parent) :
+PayOptionsView::PayOptionsView(QWidget *parent):
     QWidget(parent),
     ui(new Ui::PayOptionsView)
-{
-    ui->setupUi(this);
+    {
+        ui->setupUi(this);
 
-    payoptionPopUp = new PopUpWidget(this);
-    payoptionListPopUp = new PopUpWidget(this);
-}
+        payoptionPopUp = new PopUpWidget(this);
+        payoptionListPopUp = new PopUpWidget(this);
+    }
 
 PayOptionsView::~PayOptionsView()
 {
@@ -38,7 +38,8 @@ void PayOptionsView::on_AddButton_clicked()
 
     bool valid = true;
 
-    if (payoption.isEmpty() || DbManager::payOptionExist(g_currentUser.getEmail(), payoption)){
+    if (payoption.isEmpty() || DbManager::payOptionExist(g_currentUser.getEmail(), payoption))
+    {
         valid = false;
 
         if (payoption.isEmpty()) payoptionPopUp->setPopupText("Eingabe darf nicht leer sein.");
@@ -49,9 +50,9 @@ void PayOptionsView::on_AddButton_clicked()
         const int posY = -globalPos.y();
 
         payoptionPopUp->setGeometry(posX + ui->payoptionLine->width(),
-                               posY - ui->payoptionLine->height() / 2,
-                               payoptionPopUp->width(),
-                               payoptionPopUp->height());
+            posY - ui->payoptionLine->height() / 2,
+            payoptionPopUp->width(),
+            payoptionPopUp->height());
 
         payoptionPopUp->show();
     }
@@ -77,19 +78,18 @@ void PayOptionsView::on_DeleteButton_clicked()
     {
         valid = false;
         payoptionListPopUp->setPopupText("Keine Zahlungsmittel zum Löschen ausgewählt.");
-
-
     }
     else
     {
         QStringList payoptionsToDelete;
         QStringList failedDeletes;
 
-        foreach(const QModelIndex &index, list){
-           payoptionsToDelete.append(index.data(Qt::DisplayRole).toString());
+        foreach(const QModelIndex &index, list)
+        {
+            payoptionsToDelete.append(index.data(Qt::DisplayRole).toString());
         }
 
-        for (const auto& payoption :payoptionsToDelete)
+        for (const auto &payoption: payoptionsToDelete)
         {
             bool success = DbManager::removePayoption(g_currentUser.getEmail(), payoption);
             if (!success) failedDeletes.append(payoption);
@@ -99,8 +99,8 @@ void PayOptionsView::on_DeleteButton_clicked()
         {
             valid = false;
             payoptionListPopUp->setPopupText("Folgende Zahlungsmittel konnten nicht gelöscht werden,\n"
-                                            "da noch Transaktion mit ihnen bestehen:\n\n"
-                                            + failedDeletes.join('\n'));
+                "da noch Transaktion mit ihnen bestehen:\n\n" +
+                failedDeletes.join('\n'));
         }
 
         resetForm();
@@ -113,16 +113,13 @@ void PayOptionsView::on_DeleteButton_clicked()
         const int posY = -globalPos.y();
 
         payoptionListPopUp->setGeometry(posX + ui->payoptionListView->width(),
-                               posY - ui->payoptionListView->height() / 2 + 100,
-                               payoptionListPopUp->width(),
-                               payoptionListPopUp->height());
+            posY - ui->payoptionListView->height() / 2 + 100,
+            payoptionListPopUp->width(),
+            payoptionListPopUp->height());
 
         payoptionListPopUp->show();
     }
 }
-
-
-
 
 void PayOptionsView::on_payoptionListView_clicked(const QModelIndex &index)
 {

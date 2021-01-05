@@ -20,18 +20,13 @@ signals:
 
 private slots:
     void on_LoginButton_clicked();
-
     void on_emailLine_editingFinished();
-
     void on_passwordLine_editingFinished();
-
     void on_passwordLine_returnPressed();
-
     void resetForm();
 
 private:
     Ui::LoginView *ui;
-
     PopUpWidget *emailPopUp;
 };
 

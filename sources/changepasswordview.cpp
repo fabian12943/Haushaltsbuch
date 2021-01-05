@@ -5,15 +5,15 @@
 #include "hashing.h"
 #include "inputcheck.h"
 
-ChangePasswordView::ChangePasswordView(QWidget *parent) :
+ChangePasswordView::ChangePasswordView(QWidget *parent):
     QWidget(parent),
     ui(new Ui::ChangePasswordView)
-{
-    ui->setupUi(this);
+    {
+        ui->setupUi(this);
 
-    currentPasswordPopUp = new PopUpWidget(this);
-    newPasswordPopUp = new PopUpWidget(this);
-}
+        currentPasswordPopUp = new PopUpWidget(this);
+        newPasswordPopUp = new PopUpWidget(this);
+    }
 
 ChangePasswordView::~ChangePasswordView()
 {
@@ -49,16 +49,16 @@ void ChangePasswordView::on_ConfirmButton_clicked()
         const int posY = -globalPos.y();
 
         currentPasswordPopUp->setGeometry(posX + ui->CurrentPasswordLine->width(),
-                               posY - ui->CurrentPasswordLine->height() / 2,
-                               currentPasswordPopUp->width(),
-                               currentPasswordPopUp->height());
+            posY - ui->CurrentPasswordLine->height() / 2,
+            currentPasswordPopUp->width(),
+            currentPasswordPopUp->height());
 
         currentPasswordPopUp->show();
     }
 
     if (newPassword == confirmNewPassword)
     {
-        if(!InputCheck::isValidPassword(newPassword))
+        if (!InputCheck::isValidPassword(newPassword))
         {
             valid = false;
             newPasswordPopUp->setPopupText("Das Passwort muss mindestens\n6 Zeichen lang sein.");
@@ -68,12 +68,11 @@ void ChangePasswordView::on_ConfirmButton_clicked()
             const int posY = -globalPos.y();
 
             newPasswordPopUp->setGeometry(posX + ui->NewPasswordLine->width(),
-                                   posY - ui->NewPasswordLine->height() / 2,
-                                   newPasswordPopUp->width(),
-                                   newPasswordPopUp->height());
+                posY - ui->NewPasswordLine->height() / 2,
+                newPasswordPopUp->width(),
+                newPasswordPopUp->height());
 
             newPasswordPopUp->show();
-
         }
     }
     else
@@ -86,9 +85,9 @@ void ChangePasswordView::on_ConfirmButton_clicked()
         const int posY = -globalPos.y();
 
         newPasswordPopUp->setGeometry(posX + ui->NewPasswordLine->width(),
-                               posY - ui->NewPasswordLine->height() / 2,
-                               newPasswordPopUp->width(),
-                               newPasswordPopUp->height());
+            posY - ui->NewPasswordLine->height() / 2,
+            newPasswordPopUp->width(),
+            newPasswordPopUp->height());
 
         newPasswordPopUp->show();
     }
@@ -101,7 +100,6 @@ void ChangePasswordView::on_ConfirmButton_clicked()
 
         emit Back();
     }
-
 }
 
 void ChangePasswordView::on_CurrentPasswordLine_editingFinished()

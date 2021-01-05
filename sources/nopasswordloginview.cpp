@@ -5,14 +5,14 @@
 #include "hashing.h"
 #include "dbmanager.h"
 
-NoPasswordLoginView::NoPasswordLoginView(QWidget *parent) :
+NoPasswordLoginView::NoPasswordLoginView(QWidget *parent):
     QWidget(parent),
     ui(new Ui::NoPasswordLoginView)
-{
-    ui->setupUi(this);
+    {
+        ui->setupUi(this);
 
-    passwordPopUp = new PopUpWidget(this);
-}
+        passwordPopUp = new PopUpWidget(this);
+    }
 
 NoPasswordLoginView::~NoPasswordLoginView()
 {
@@ -26,7 +26,7 @@ void NoPasswordLoginView::on_LoginButton_clicked()
 
     if (password == confirmedPassword)
     {
-        if(!InputCheck::isValidPassword(password))
+        if (!InputCheck::isValidPassword(password))
         {
             passwordPopUp->setPopupText("Das Passwort muss mindestens 6 Zeichen lang sein.");
 
@@ -35,12 +35,11 @@ void NoPasswordLoginView::on_LoginButton_clicked()
             const int posY = -globalPos.y();
 
             passwordPopUp->setGeometry(posX + ui->PasswordLine->width(),
-                                   posY - ui->PasswordLine->height() / 2,
-                                   passwordPopUp->width(),
-                                   passwordPopUp->height());
+                posY - ui->PasswordLine->height() / 2,
+                passwordPopUp->width(),
+                passwordPopUp->height());
 
             passwordPopUp->show();
-
         }
         else
         {
@@ -60,13 +59,12 @@ void NoPasswordLoginView::on_LoginButton_clicked()
         const int posY = -globalPos.y();
 
         passwordPopUp->setGeometry(posX + ui->PasswordLine->width(),
-                               posY - ui->PasswordLine->height() / 2,
-                               passwordPopUp->width(),
-                               passwordPopUp->height());
+            posY - ui->PasswordLine->height() / 2,
+            passwordPopUp->width(),
+            passwordPopUp->height());
 
         passwordPopUp->show();
     }
-
 }
 
 void NoPasswordLoginView::on_BackButton_clicked()

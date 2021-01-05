@@ -21,11 +21,8 @@ private slots:
     void on_CreateButton_clicked();
     void on_BackButton_clicked();
     void resetForm();
-
     void on_firstNameLine_editingFinished();
-
     void on_lastNameLine_editingFinished();
-
     void on_emailLine_editingFinished();
 
 private:

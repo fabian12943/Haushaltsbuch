@@ -25,7 +25,6 @@ private:
 
 private slots:
     void on_BackButton_clicked();
-
     void on_AddButton_clicked();
     void on_categoryLine_editingFinished();
     void on_DeleteButton_clicked();

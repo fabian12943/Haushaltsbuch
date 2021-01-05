@@ -2,12 +2,12 @@
 #include "ui_manageuserview.h"
 #include "dbmanager.h"
 
-ManageUserView::ManageUserView(QWidget *parent) :
+ManageUserView::ManageUserView(QWidget *parent):
     QWidget(parent),
     ui(new Ui::ManageUserView)
-{
-    ui->setupUi(this);
-}
+    {
+        ui->setupUi(this);
+    }
 
 ManageUserView::~ManageUserView()
 {
@@ -33,7 +33,7 @@ void ManageUserView::on_DeleteButton_clicked()
 {
     QStringList usersToDelete = getSelectedUsers();
 
-    for (const auto& user :usersToDelete)
+    for (const auto &user: usersToDelete)
     {
         DbManager::deleteUser(user);
     }
@@ -45,7 +45,7 @@ void ManageUserView::on_PasswordResetButton_clicked()
 {
     QStringList usersToResetPassword = getSelectedUsers();
 
-    for (const auto& user :usersToResetPassword)
+    for (const auto &user: usersToResetPassword)
     {
         DbManager::changePassword(user, "");
     }
@@ -57,7 +57,7 @@ void ManageUserView::on_UnblockButton_clicked()
 {
     QStringList usersToUnblock = getSelectedUsers();
 
-    for (const auto& user :usersToUnblock)
+    for (const auto &user: usersToUnblock)
     {
         DbManager::unblockUser(user);
     }
@@ -71,8 +71,9 @@ QStringList ManageUserView::getSelectedUsers()
 
     QStringList selectedUsers;
 
-    foreach(const QModelIndex &index, list){
-       selectedUsers.append(index.data(Qt::DisplayRole).toString());
+    foreach(const QModelIndex &index, list)
+    {
+        selectedUsers.append(index.data(Qt::DisplayRole).toString());
     }
 
     qDebug() << "Manage Users: selected Users: " << selectedUsers;

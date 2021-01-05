@@ -2,18 +2,17 @@
 #include "ui_loginview.h"
 #include "dbmanager.h"
 #include "hashing.h"
-#include <iostream>
 #include "global.h"
+#include <iostream>
 
-LoginView::LoginView(QWidget *parent) :
+LoginView::LoginView(QWidget *parent):
     QWidget(parent),
     ui(new Ui::LoginView)
-{
-    ui->setupUi(this);
+    {
+        ui->setupUi(this);
 
-    emailPopUp = new PopUpWidget(this);
-
-}
+        emailPopUp = new PopUpWidget(this);
+    }
 
 LoginView::~LoginView()
 {
@@ -77,18 +76,17 @@ void LoginView::on_LoginButton_clicked()
         emailPopUp->setPopupText("Ein Nutzer mit dieser E-Mail/Kennwort-Kombination\nkonnte nicht gefunden werden!");
 
         Blocked:
-        if (blocked == true) emailPopUp->setPopupText("Der Nutzer mit dieser E-Mail ist gesperrt, da er zu viele falsche Loginversuche hatte.\n"
-                                                      "Wende dich an den Administrator, damit dieser dich wieder entsperren kann.");;
-
+            if (blocked == true) emailPopUp->setPopupText("Der Nutzer mit dieser E-Mail ist gesperrt, da er zu viele falsche Loginversuche hatte.\n"
+                "Wende dich an den Administrator, damit dieser dich wieder entsperren kann.");;
 
         const QPoint globalPos = ui->emailLine->mapFromGlobal(QPoint(0, 0));
         const int posX = -globalPos.x();
         const int posY = -globalPos.y();
 
         emailPopUp->setGeometry(posX + ui->emailLine->width(),
-                               posY - ui->emailLine->height() / 2,
-                               emailPopUp->width(),
-                               emailPopUp->height());
+            posY - ui->emailLine->height() / 2,
+            emailPopUp->width(),
+            emailPopUp->height());
 
         emailPopUp->show();
     }

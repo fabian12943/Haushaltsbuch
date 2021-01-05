@@ -1,9 +1,7 @@
 #include "user.h"
 #include "dbmanager.h"
 
-User::User()
-{
-}
+User::User() {}
 
 void User::setEmail(QString email)
 {
@@ -34,5 +32,3 @@ bool User::isAdmin()
 {
     return DbManager::isAdmin(email);
 }
-
-

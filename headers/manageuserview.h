@@ -19,11 +19,8 @@ signals:
 
 private slots:
     void on_BackButton_clicked();
-
     void on_DeleteButton_clicked();
-
     void on_PasswordResetButton_clicked();
-
     void on_UnblockButton_clicked();
 
 private:

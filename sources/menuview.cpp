@@ -1,29 +1,29 @@
 #include "menuview.h"
 #include "ui_menuview.h"
-#include <QDebug>
 #include "global.h"
 #include "dbmanager.h"
 #include "numberformatdelegate.h"
+#include <QDebug>
 
-MenuView::MenuView(QWidget *parent) :
+MenuView::MenuView(QWidget *parent):
     QWidget(parent),
     ui(new Ui::MenuView)
-{
-    ui->setupUi(this);
+    {
+        ui->setupUi(this);
 
-    ui->toDate->setDate(QDate::currentDate());
-    ui->toDate->setMaximumDate(QDate::currentDate());
-    ui->fromDate->setDate(QDate::currentDate());
-    ui->fromDate->setDate(ui->fromDate->date().addYears(-1));
-    ui->fromDate->setMaximumDate(QDate::currentDate());
+        ui->toDate->setDate(QDate::currentDate());
+        ui->toDate->setMaximumDate(QDate::currentDate());
+        ui->fromDate->setDate(QDate::currentDate());
+        ui->fromDate->setDate(ui->fromDate->date().addYears(-1));
+        ui->fromDate->setMaximumDate(QDate::currentDate());
 
-    ui->transactionsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-    ui->transactionsTable->horizontalHeader()->resizeSection(7, QHeaderView::Stretch);
-    ui->transactionsTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->transactionsTable->verticalHeader()->hide();
-    ui->transactionsTable->setItemDelegateForColumn(6, new NumberFormatDelegate(this));
-    ui->transactionsTable->setColumnHidden(0, true);
-}
+        ui->transactionsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+        ui->transactionsTable->horizontalHeader()->resizeSection(7, QHeaderView::Stretch);
+        ui->transactionsTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+        ui->transactionsTable->verticalHeader()->hide();
+        ui->transactionsTable->setItemDelegateForColumn(6, new NumberFormatDelegate(this));
+        ui->transactionsTable->setColumnHidden(0, true);
+    }
 
 MenuView::~MenuView()
 {
@@ -32,7 +32,8 @@ MenuView::~MenuView()
 
 void MenuView::loadSpecificMenu()
 {
-    if(!g_currentUser.isAdmin()){
+    if (!g_currentUser.isAdmin())
+    {
         ui->adminToolsLabel->setVisible(false);
         ui->createUserButton->close();
         ui->manageUserButton->close();
@@ -61,7 +62,8 @@ void MenuView::loadSpecificMenu()
     updateTable();
 }
 
-void MenuView::reset(){
+void MenuView::reset()
+{
     ui->toDate->setDate(QDate::currentDate());
     ui->toDate->setMaximumDate(QDate::currentDate());
     ui->fromDate->setDate(QDate::currentDate());
@@ -78,22 +80,22 @@ void MenuView::updateTable()
     if (ui->categoryCheckBox->isChecked() && !ui->groupCheckBox->isChecked())
     {
         ui->transactionsTable->setModel(DbManager::getTransactionsModel(g_currentUser.getEmail(), ui->fromDate->date(),
-                                                                        ui->toDate->date(), ui->categoryComboBox->currentText(),
-                                                                        false));
+            ui->toDate->date(), ui->categoryComboBox->currentText(),
+            false));
     }
     if (!ui->categoryCheckBox->isChecked() && ui->groupCheckBox->isChecked())
     {
         ui->transactionsTable->setModel(DbManager::getTransactionsModel(g_currentUser.getEmail(), ui->fromDate->date(),
-                                                                        ui->toDate->date(), "", true));
+            ui->toDate->date(), "", true));
     }
     if (!ui->categoryCheckBox->isChecked() && !ui->groupCheckBox->isChecked())
     {
         ui->transactionsTable->setModel(DbManager::getTransactionsModel(g_currentUser.getEmail(), ui->fromDate->date(),
-                                                                        ui->toDate->date(), "", false));
+            ui->toDate->date(), "", false));
     }
 
     QLocale locale;
-    ui->saldoAmountLabel->setText((locale.toString(getSaldo(),'f', 2)) + " €");
+    ui->saldoAmountLabel->setText((locale.toString(getSaldo(), 'f', 2)) + " €");
 }
 
 void MenuView::on_infoButton_clicked()
@@ -143,7 +145,8 @@ void MenuView::on_toDate_userDateChanged(const QDate &date)
     QDate fromDate = ui->fromDate->date();
     QDate toDate = date;
 
-    if (toDate < fromDate){
+    if (toDate < fromDate)
+    {
         ui->fromDate->setDate(date.addMonths(-1));
     }
 
@@ -155,7 +158,8 @@ void MenuView::on_fromDate_userDateChanged(const QDate &date)
     QDate fromDate = date;
     QDate toDate = ui->toDate->date();
 
-    if (fromDate > toDate){
+    if (fromDate > toDate)
+    {
         ui->toDate->setDate(date.addMonths(1));
     }
 
@@ -196,7 +200,7 @@ void MenuView::on_DeleteButton_clicked()
 {
     QList<int> transactionsToDelete = getSelectedTransactions();
 
-    for (const auto& transaction :transactionsToDelete)
+    for (const auto &transaction: transactionsToDelete)
     {
         DbManager::removeTransaction(transaction);
     }
@@ -210,8 +214,9 @@ QList<int> MenuView::getSelectedTransactions()
 
     QList<int> selectedTransactions;
 
-    foreach(const QModelIndex &index, list){
-       selectedTransactions.append(index.data(Qt::DisplayRole).toInt());
+    foreach(const QModelIndex &index, list)
+    {
+        selectedTransactions.append(index.data(Qt::DisplayRole).toInt());
     }
 
     return selectedTransactions;
@@ -221,26 +226,25 @@ double MenuView::getSaldo()
 {
     QAbstractItemModel *model = ui->transactionsTable->model();
 
-
     QStringList type;
     QList<double> amount;
 
     double saldo = 0.00;
 
-    for ( int col = 0; col < model->columnCount(); ++col )
+    for (int col = 0; col < model->columnCount(); ++col)
     {
-      for( int row = 0; row < model->rowCount(); ++row )
-         {
-         QModelIndex index = model->index( row, col );
-         if (col == 2)
-         {
-             type.append(index.data().toString());
-         }
-         if (col == 6)
-         {
-             amount.append(index.data().toDouble());
-         }
-      }
+        for (int row = 0; row < model->rowCount(); ++row)
+        {
+            QModelIndex index = model->index(row, col);
+            if (col == 2)
+            {
+                type.append(index.data().toString());
+            }
+            if (col == 6)
+            {
+                amount.append(index.data().toDouble());
+            }
+        }
     }
 
     for (int i = 0; i < type.length(); ++i)
@@ -252,7 +256,6 @@ double MenuView::getSaldo()
     return saldo;
 }
 
-
 void MenuView::on_transactionsTable_doubleClicked(const QModelIndex &index)
 {
     int row = index.row();
@@ -263,7 +266,7 @@ void MenuView::on_transactionsTable_doubleClicked(const QModelIndex &index)
 
     QStringList values;
 
-    for (int i = 0; i<columnAmount; ++i)
+    for (int i = 0; i < columnAmount; ++i)
     {
         values.append(index.sibling(row, i).data().toString());
     }

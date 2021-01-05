@@ -3,19 +3,19 @@
 #include "inputcheck.h"
 #include "dbmanager.h"
 
-CreateUserView::CreateUserView(QWidget *parent) :
+CreateUserView::CreateUserView(QWidget *parent):
     QWidget(parent),
     ui(new Ui::CreateUserView)
-{
-    ui->setupUi(this);
+    {
+        ui->setupUi(this);
 
-    ui->birthDate->setDate(QDate::currentDate());
-    ui->birthDate->setMaximumDate(QDate::currentDate());
+        ui->birthDate->setDate(QDate::currentDate());
+        ui->birthDate->setMaximumDate(QDate::currentDate());
 
-    firstnamePopUp = new PopUpWidget(this);
-    lastnamePopUp = new PopUpWidget(this);
-    emailPopUp = new PopUpWidget(this);
-}
+        firstnamePopUp = new PopUpWidget(this);
+        lastnamePopUp = new PopUpWidget(this);
+        emailPopUp = new PopUpWidget(this);
+    }
 
 CreateUserView::~CreateUserView()
 {
@@ -62,9 +62,9 @@ void CreateUserView::on_CreateButton_clicked()
         const int posY = -globalPos.y();
 
         firstnamePopUp->setGeometry(posX + ui->firstNameLine->width(),
-                               posY - ui->firstNameLine->height() / 2,
-                               firstnamePopUp->width(),
-                               firstnamePopUp->height());
+            posY - ui->firstNameLine->height() / 2,
+            firstnamePopUp->width(),
+            firstnamePopUp->height());
 
         firstnamePopUp->show();
     }
@@ -80,9 +80,9 @@ void CreateUserView::on_CreateButton_clicked()
         const int posY = -globalPos.y();
 
         lastnamePopUp->setGeometry(posX + ui->lastNameLine->width(),
-                               posY - ui->lastNameLine->height() / 2,
-                               lastnamePopUp->width(),
-                               lastnamePopUp->height());
+            posY - ui->lastNameLine->height() / 2,
+            lastnamePopUp->width(),
+            lastnamePopUp->height());
 
         lastnamePopUp->show();
     }
@@ -106,16 +106,16 @@ void CreateUserView::on_CreateButton_clicked()
         const int posY = -globalPos.y();
 
         emailPopUp->setGeometry(posX + ui->emailLine->width(),
-                               posY - ui->emailLine->height() / 2,
-                               emailPopUp->width(),
-                               emailPopUp->height());
+            posY - ui->emailLine->height() / 2,
+            emailPopUp->width(),
+            emailPopUp->height());
 
         emailPopUp->show();
     }
 
     if (valid)
     {
-        DbManager::addUser(email, firstname, lastname, nullptr, birthdate,0);
+        DbManager::addUser(email, firstname, lastname, nullptr, birthdate, 0);
         resetForm();
     }
 }

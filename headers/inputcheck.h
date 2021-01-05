@@ -7,7 +7,6 @@ class InputCheck
 {
 public:
     InputCheck();
-
     static bool isValidName(QString name);
     static bool isValidEmail(QString email);
     static bool isValidPassword(QString password);
