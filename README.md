@@ -7,7 +7,7 @@ household members to keep track of their spendings and earnings and become more 
 
 This application was built as part of a lecture at Aalen University within 3 weeks.
 
-## Features
+## 🌟 Features
 ### Admin
 * Single Admin who manages the system
 * Create and delete users
@@ -28,11 +28,13 @@ This application was built as part of a lecture at Aalen University within 3 wee
 * Group table by category
 * Show balance of transactions 
 
-## Upcoming Features
+## 🆕 Upcoming Features
 * Export transactions to Excel-File
 
-## Known Bugs
+## 🛑 Known Bugs
 * Searchline above Users-Table in Admin-Tools not functional
 
-## More Screenshots
-more to come
+## 🖼️ More Screenshots
+<p align="center"><img src="screenshots/menu_light.png" width="800"/></p>
+<p align="center"><img src="screenshots/manageUsers_light.png" width="800"/></p>
+<p align="center"><img src="screenshots/addTransaction_light.png" width="800"/></p>
