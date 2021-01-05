@@ -28,7 +28,7 @@ private slots:
     void on_AddButton_clicked();
     void on_categoryLine_editingFinished();
     void on_DeleteButton_clicked();
-    void on_categoryListView_clicked(const QModelIndex &index);
+    void on_categoryListView_clicked(const QModelIndex &);
 };
 
 #endif // CATVIEW_H

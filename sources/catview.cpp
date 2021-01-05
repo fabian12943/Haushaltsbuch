@@ -136,7 +136,7 @@ void CatView::on_DeleteButton_clicked()
     }
 }
 
-void CatView::on_categoryListView_clicked(const QModelIndex &index)
+void CatView::on_categoryListView_clicked(const QModelIndex &)
 {
     categoryListPopUp->hide();
 }

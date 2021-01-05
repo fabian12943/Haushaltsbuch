@@ -28,7 +28,7 @@ private slots:
     void on_AddButton_clicked();
     void on_payoptionLine_editingFinished();
     void on_DeleteButton_clicked();
-    void on_payoptionListView_clicked(const QModelIndex &index);
+    void on_payoptionListView_clicked(const QModelIndex &);
 };
 
 #endif // PAYOPTIONSVIEW_H

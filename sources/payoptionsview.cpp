@@ -122,7 +122,7 @@ void PayOptionsView::on_DeleteButton_clicked()
     }
 }
 
-void PayOptionsView::on_payoptionListView_clicked(const QModelIndex &index)
+void PayOptionsView::on_payoptionListView_clicked(const QModelIndex &)
 {
     payoptionListPopUp->hide();
 }

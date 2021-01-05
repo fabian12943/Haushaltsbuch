@@ -45,7 +45,7 @@ private slots:
     void on_fromDate_userDateChanged(const QDate &date);
     void on_categoryCheckBox_stateChanged(int arg1);
     void on_groupCheckBox_stateChanged(int arg1);
-    void on_categoryComboBox_currentTextChanged(const QString &arg1);
+    void on_categoryComboBox_currentTextChanged(const QString &);
     void on_DeleteButton_clicked();
     void on_transactionsTable_doubleClicked(const QModelIndex &index);
 };

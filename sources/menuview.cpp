@@ -191,7 +191,7 @@ void MenuView::on_groupCheckBox_stateChanged(int arg1)
     updateTable();
 }
 
-void MenuView::on_categoryComboBox_currentTextChanged(const QString &arg1)
+void MenuView::on_categoryComboBox_currentTextChanged(const QString &)
 {
     updateTable();
 }
