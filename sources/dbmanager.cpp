@@ -40,6 +40,7 @@ bool DbManager::isOpen() const
     return m_db.isOpen();
 }
 
+// Create all needed tables in database if they do not exist already
 bool DbManager::createTables()
 {
     QSqlQuery query;

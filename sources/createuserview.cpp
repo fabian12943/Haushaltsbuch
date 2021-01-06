@@ -36,6 +36,7 @@ void CreateUserView::resetForm()
     ui->emailLine->setText("");
     ui->birthDate->setDate(QDate::currentDate());
 
+    // Hides ErrorPopUps if any are shown
     firstnamePopUp->hide();
     lastnamePopUp->hide();
     emailPopUp->hide();
@@ -43,6 +44,7 @@ void CreateUserView::resetForm()
 
 void CreateUserView::on_CreateButton_clicked()
 {
+    // Save userinput to variables
     QString firstname = ui->firstNameLine->text().toLower().trimmed();
     firstname[0] = firstname[0].toUpper();
     QString lastname = ui->lastNameLine->text().toLower().trimmed();
@@ -50,6 +52,7 @@ void CreateUserView::on_CreateButton_clicked()
     QString email = ui->emailLine->text().toLower().trimmed();
     QString birthdate = ui->birthDate->text();
 
+    // All input valid?
     bool valid = true;
 
     if (!InputCheck::isValidName(firstname))
