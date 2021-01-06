@@ -79,3 +79,8 @@ QStringList ManageUserView::getSelectedUsers()
     qDebug() << "Manage Users: selected Users: " << selectedUsers;
     return selectedUsers;
 }
+
+void ManageUserView::on_searchLine_textChanged(const QString &searchInput)
+{
+    ui->UserTableView->setModel(DbManager::getUserModel(searchInput));
+}

@@ -297,6 +297,11 @@ QSqlQueryModel *DbManager::getUserModel()
     return UserDAO::getUserModel();
 }
 
+QSqlQueryModel *DbManager::getUserModel(const QString &search)
+{
+    return UserDAO::getUserModel(search);
+}
+
 bool DbManager::addCategory(const QString &email, const QString &category)
 {
     return CategoryDAO::addCategory(email, category);

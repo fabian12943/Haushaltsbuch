@@ -413,3 +413,41 @@ QSqlQueryModel *UserDAO::getUserModel()
         return nullptr;
     }
 }
+
+QSqlQueryModel *UserDAO::getUserModel(const QString &search)
+{
+    QString simplifiedSearch = search.trimmed().simplified();
+    bool fullName = simplifiedSearch.contains(" ");
+
+    QSqlQueryModel *model = new QSqlQueryModel();
+    QSqlQuery query;
+
+    if (!fullName)
+    {
+        query.prepare("SELECT email AS `E-Mail`, firstname AS `Vorname`, lastname AS `Nachname`,"
+            "birthdate AS `Geburtsdatum`, is_blocked AS `gesperrt?`, password AS `Passwort?`"
+            "FROM user WHERE is_admin = (0) AND (email LIKE (:search) OR firstname LIKE (:search)"
+                      "OR lastname LIKE (:search) OR (firstname LIKE (:search) AND lastname LIKE (:search)) OR birthdate LIKE (:search))");
+        query.bindValue(":search", QString("%%1%").arg(simplifiedSearch));
+    }
+    else
+    {
+        QStringList values = simplifiedSearch.split(" ");
+        query.prepare("SELECT email AS `E-Mail`, firstname AS `Vorname`, lastname AS `Nachname`,"
+            "birthdate AS `Geburtsdatum`, is_blocked AS `gesperrt?`, password AS `Passwort?`"
+            "FROM user WHERE is_admin = (0) AND ((firstname LIKE (:search1) AND lastname LIKE (:search2)) "
+                      "OR (firstname LIKE (:search2) AND lastname LIKE (:search1)) )");
+        query.bindValue(":search1", QString("%%1%").arg(values[0]));
+        query.bindValue(":search2", QString("%%1%").arg(values[1]));
+    }
+
+    if (query.exec())
+    {
+        model->setQuery(query);
+        return model;
+    }
+    else
+    {
+        return nullptr;
+    }
+}

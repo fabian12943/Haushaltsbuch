@@ -30,6 +30,7 @@ public:
     static bool isBlocked(const QString& email);
     static bool changePassword(const QString& email, const QString&password);
     static QSqlQueryModel* getUserModel();
+    static QSqlQueryModel* getUserModel(const QString& search);
 };
 
 #endif // USERDAO_H

@@ -121,21 +121,21 @@ color: rgb(191, 189, 0)
               </font>
              </property>
              <property name="text">
-              <string>Suchen:</string>
+              <string>Durchsuchen:</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit">
+            <widget class="QLineEdit" name="searchLine">
              <property name="minimumSize">
               <size>
-               <width>200</width>
+               <width>330</width>
                <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>200</width>
+               <width>330</width>
                <height>25</height>
               </size>
              </property>
@@ -144,8 +144,17 @@ color: rgb(191, 189, 0)
                <pointsize>14</pointsize>
               </font>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLineEdit{
+border-radius: 20px;
+border-style: outset;
+}</string>
+             </property>
              <property name="placeholderText">
-              <string>Max Mustermann</string>
+              <string>Name oder Email oder Geburtsdatum</string>
              </property>
             </widget>
            </item>

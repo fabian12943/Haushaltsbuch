@@ -23,6 +23,8 @@ private slots:
     void on_PasswordResetButton_clicked();
     void on_UnblockButton_clicked();
 
+    void on_searchLine_textChanged(const QString &arg1);
+
 private:
     Ui::ManageUserView *ui;
     QStringList getSelectedUsers();

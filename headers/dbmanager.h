@@ -38,6 +38,7 @@ public:
     static bool isBlocked(const QString& email);
     static bool changePassword(const QString& email, const QString&password);
     static QSqlQueryModel* getUserModel();
+    static QSqlQueryModel* getUserModel(const QString& search);
 
     // CategoryDAO
     static bool addCategory(const QString& email, const QString& category);
