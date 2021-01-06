@@ -1,8 +1,8 @@
 <p align="center"><img src="screenshots/menu_dark.png" width="800"/></p>
 
-# meinHaushaltsbuch 📚
+# meinHaushalt 🏡
 
-<b>meinHaushaltsbuch</b> is an Application for MacOS and Windows that helps you and your 
+<b>meinHaushalt</b> is an Application for MacOS and Windows that helps you and your 
 household members to keep track of their spendings and earnings and become more financially responsible.
 
 This application was built as part of a lecture at Aalen University within 3 weeks.
@@ -27,6 +27,9 @@ This application was built as part of a lecture at Aalen University within 3 wee
 * Sort table by date or category 
 * Group table by category
 * Show balance of transactions 
+
+### Persistence
+* User data is locally stored using a SQLite-Database
 
 ## 🆕 Upcoming Features
 * Export transactions to Excel-File
