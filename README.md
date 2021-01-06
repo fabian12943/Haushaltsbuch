@@ -30,9 +30,10 @@ This application was built as part of a lecture at Aalen University within 3 wee
 
 ## 🆕 Upcoming Features
 * Export transactions to Excel-File
+* Search in Transaction-Table
 
 ## 🛑 Known Bugs
-* Searchline above Users-Table in Admin-Tools not functional
+* Let me know if you found any bugs and I will try to fix them
 
 ## 🖼️ More Screenshots
 <p align="center"><img src="screenshots/menu_light.png" width="800"/></p>
