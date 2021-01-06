@@ -12,7 +12,7 @@ DbManager::DbManager()
 {
     // Connect to database and open it
     m_db = QSqlDatabase::addDatabase("QSQLITE");
-    QString path = QApplication::applicationDirPath() + "haushaltsbuch.db";
+    QString path = QApplication::applicationDirPath() + "//meinHaushalt_database.db";
     m_db.setDatabaseName(path);
 
     if (!m_db.open())
