@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
+    <width>1350</width>
     <height>700</height>
    </rect>
   </property>
@@ -617,7 +617,36 @@ QPushButton:focus {
               </font>
              </property>
              <property name="text">
-              <string>nach Kategorien gruppieren</string>
+              <string>Kategorien gruppieren</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit">
+             <property name="minimumSize">
+              <size>
+               <width>200</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>200</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>13</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLineEdit {
+border-style: outset;
+}</string>
+             </property>
+             <property name="placeholderText">
+              <string>Durchsuchen</string>
              </property>
             </widget>
            </item>
