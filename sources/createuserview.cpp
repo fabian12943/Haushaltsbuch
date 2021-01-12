@@ -31,12 +31,13 @@ void CreateUserView::on_BackButton_clicked()
 
 void CreateUserView::resetForm()
 {
+    // Remove user input and reset to default values
     ui->firstNameLine->setText("");
     ui->lastNameLine->setText("");
     ui->emailLine->setText("");
     ui->birthDate->setDate(QDate::currentDate());
 
-    // Hides ErrorPopUps if any are shown
+    // Hide ErrorPopUps if any are shown
     firstnamePopUp->hide();
     lastnamePopUp->hide();
     emailPopUp->hide();
@@ -55,6 +56,7 @@ void CreateUserView::on_CreateButton_clicked()
     // All input valid?
     bool valid = true;
 
+    // Show error message if user input firstname is not valid
     if (!InputCheck::isValidName(firstname))
     {
         valid = false;
@@ -73,6 +75,7 @@ void CreateUserView::on_CreateButton_clicked()
         firstnamePopUp->show();
     }
 
+    // Show error message if user input lastname is not valid
     if (!InputCheck::isValidName(lastname))
     {
         valid = false;
@@ -91,6 +94,7 @@ void CreateUserView::on_CreateButton_clicked()
         lastnamePopUp->show();
     }
 
+    // Show error message if user input email is not valid and/or already exists
     if (!InputCheck::isValidEmail(email) || DbManager::emailExists(email))
     {
         valid = false;
@@ -117,9 +121,13 @@ void CreateUserView::on_CreateButton_clicked()
         emailPopUp->show();
     }
 
+    // Run if all input is valid
     if (valid)
     {
+        // Add user to database user
         DbManager::addUser(email, firstname, lastname, nullptr, birthdate, 0);
+
+        // Reset all forms to default values
         resetForm();
     }
 }

@@ -11,7 +11,7 @@ LoginView::LoginView(QWidget *parent):
     {
         ui->setupUi(this);
 
-        // Initialize PopUpWidget to display error message next to Inputline if necessary
+        // Initialize PopUpWidget to display error message next to inputline if necessary
         emailPopUp = new PopUpWidget(this);
     }
 
@@ -22,38 +22,55 @@ LoginView::~LoginView()
 
 void LoginView::on_LoginButton_clicked()
 {
+    // Save userinput to variables
     QString email = ui->emailLine->text().toLower().trimmed();
     QString password = ui->passwordLine->text();
 
+    // All userinput valid?
     bool valid = true;
+    // User blocked?
     bool blocked = false;
 
+    // Check if email/user exists in the database
     if (DbManager::emailExists(email))
     {
+        // Check if user is blocked
         blocked = DbManager::isBlocked(email);
 
         if (blocked == 1) goto Blocked;
 
         g_currentUser.setEmail(email);
 
+        // Check if user has a password set for his account yet
         if (DbManager::passwordSet(email))
         {
+            // Get hashed password of user from database
             QString hashedDbPassword = DbManager::getPassword(email);
 
+            // Get salt of user from database and concat with password input
             QString saltedPassword = DbManager::getSalt(email) + password;
+            // Hash the combination of salt and password input
             QByteArray hashedPassword = Hashing::hash_sha256(saltedPassword);
 
+            // Compare hashed password from database with hashed input password
             if (hashedDbPassword == hashedPassword)
             {
                 qDebug() << "Login: successful login: " << email;
+
+                // Reset the counter for recent failed logins of the user to 0
                 DbManager::resetRecentFailedLoginCounter(email);
+
+                // Open MenuView
                 emit Login();
             }
             else
             {
                 qDebug() << "Login: password fail: " << email;
+
+                // Check if the user that is trying to login is not an admin
                 if (!DbManager::isAdmin(email))
                 {
+                    // Increase the counter for recent failed logins of the user by 1
                     DbManager::increaseRecentFailedLoginCounter(email);
                 }
                 valid = false;
@@ -62,6 +79,8 @@ void LoginView::on_LoginButton_clicked()
         else
         {
             qDebug() << "Login: no password set yet: " << email;
+
+            // Open NoPasswordLogin, where user can set his password
             emit NoPasswordLogin();
         }
     }
@@ -71,6 +90,7 @@ void LoginView::on_LoginButton_clicked()
         valid = false;
     }
 
+    // Run if an error occured with the user input
     if (!valid)
     {
         qDebug() << "Login: email/password-combination not found or user blocked";

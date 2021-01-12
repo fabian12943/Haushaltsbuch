@@ -39,6 +39,7 @@ bool CategoryDAO::removeCategory(const QString &email, const QString &category)
         }
     }
 
+    // Delete category from database categories
     QSqlQuery queryDelete;
     queryDelete.prepare("DELETE FROM categories WHERE email = (:email) AND category = (:category)");
     queryDelete.bindValue(":email", email);
@@ -74,6 +75,7 @@ QSqlQueryModel *CategoryDAO::getCategoriesModel()
     }
 }
 
+// Check if the given category exists in the database in combination with the given email
 bool CategoryDAO::categoryExist(const QString &email, const QString &category)
 {
     bool exists = false;

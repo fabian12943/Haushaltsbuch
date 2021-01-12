@@ -17,11 +17,17 @@ MenuView::MenuView(QWidget *parent):
         ui->fromDate->setDate(ui->fromDate->date().addYears(-1));
         ui->fromDate->setMaximumDate(QDate::currentDate());
 
+        // Make table columns resizable for the user
         ui->transactionsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+        // Stretch last column to fit the entire table
         ui->transactionsTable->horizontalHeader()->resizeSection(7, QHeaderView::Stretch);
+        // Allow user to select several rows at once
         ui->transactionsTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+        // Hide the vertical header
         ui->transactionsTable->verticalHeader()->hide();
+        // Format currency
         ui->transactionsTable->setItemDelegateForColumn(6, new NumberFormatDelegate(this));
+        // Hide first column containing email of user
         ui->transactionsTable->setColumnHidden(0, true);
     }
 
@@ -32,6 +38,7 @@ MenuView::~MenuView()
 
 void MenuView::loadSpecificMenu()
 {
+    // Alter Menu to only show admin tools if admin is logged in
     if (!g_currentUser.isAdmin())
     {
         ui->adminToolsLabel->setVisible(false);
@@ -51,7 +58,7 @@ void MenuView::loadSpecificMenu()
     {
         ui->nameLabel->setText(g_currentUser.getFirstName().toUpper());
     }
-    else
+    else // Abbreviate name of user to only initials if too long
     {
         QString name = g_currentUser.getFirstName()[0].toUpper() + '.' + ' ' + g_currentUser.getLastName()[0].toUpper() + '.';
         ui->nameLabel->setText(name);

@@ -32,6 +32,9 @@ bool InputCheck::isEuroCurrency(QString amount)
 {
     if (amount.length() == 0) return false;
 
+    /*
+        Valid input examples: 12€, 42,98, € 1.000, 2.234.231,23, 32, ...
+    */
     QRegExp rx("^\\€?\\s*(\\d{1,3}[.](\\d{3}[.])*\\d{3}|\\d+)([,]\\d{1,2})?\\s*\\€?$");
 
     return rx.exactMatch(amount);
