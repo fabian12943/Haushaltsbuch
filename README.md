@@ -36,6 +36,7 @@ This application was built as part of a lecture at Aalen University within 3 wee
 * Search in Transaction-Table
 
 ## 🛑 Known Bugs
+* On Windows only: Database can only be altered when application is run as administrator
 * Let me know if you found any bugs and I will try to fix them
 
 ## 🖼️ More Screenshots
